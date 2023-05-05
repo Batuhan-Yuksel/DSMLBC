@@ -1,2 +1,2 @@
-# CRM_Analytics
-FLO Veri Setinin RFM Analizi ile İncelenmesi
+# Data Science & Machine Learning
+solutions for cases containing real-life data

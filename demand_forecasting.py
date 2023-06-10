@@ -48,14 +48,14 @@ df = pd.concat([train, test], sort=False)
 
 def create_date_features(df):
     df['month'] = df.date.dt.month # ay bilgisi
-    df['day_of_month'] = df.date.dt.day # ayın günü
-    df['day_of_year'] = df.date.dt.dayofyear # yılın hangi günü
-    df['week_of_year'] = df.date.dt.weekofyear # yılın hangi haftası
-    df['day_of_week'] = df.date.dt.dayofweek # haftanın hangi günü
-    df['year'] = df.date.dt.year # yıl bilgisi
+    df['day_of_month'] = df.date.dt.day # ayÃ½n gÃ¼nÃ¼
+    df['day_of_year'] = df.date.dt.dayofyear # yÃ½lÃ½n hangi gÃ¼nÃ¼
+    df['week_of_year'] = df.date.dt.weekofyear # yÃ½lÃ½n hangi haftasÃ½
+    df['day_of_week'] = df.date.dt.dayofweek # haftanÃ½n hangi gÃ¼nÃ¼
+    df['year'] = df.date.dt.year # yÃ½l bilgisi
     df["is_wknd"] = df.date.dt.weekday // 4 # hafta sonu mu ?
-    df['is_month_start'] = df.date.dt.is_month_start.astype(int) # ayın başlangıcı mı ?
-    df['is_month_end'] = df.date.dt.is_month_end.astype(int) # ayın sonu mu ?
+    df['is_month_start'] = df.date.dt.is_month_start.astype(int) # ayÃ½n baÃ¾langÃ½cÃ½ mÃ½ ?
+    df['is_month_end'] = df.date.dt.is_month_end.astype(int) # ayÃ½n sonu mu ?
     return df
 
 df = create_date_features(df)
@@ -128,7 +128,7 @@ df = pd.get_dummies(df, columns=['store', 'item', 'day_of_week', 'month'])
 # Converting sales to log(1+sales)
 ########################
 
-df['sales'] = np.log1p(df["sales"].values) # 1 ifadesi olası bazı hataların önüne geçmek için bir metottur.
+df['sales'] = np.log1p(df["sales"].values)
 
 #####################################################
 # Model
@@ -151,8 +151,8 @@ def smape(preds, target):
 
 
 def lgbm_smape(preds, train_data):
-    labels = train_data.get_label() # label'lar gerçek değerler, preds tahmin değerleri
-    smape_val = smape(np.expm1(preds), np.expm1(labels)) # ikisini karşılaştırıyoruz ve smape skourunu hesaplayacağız
+    labels = train_data.get_label()
+    smape_val = smape(np.expm1(preds), np.expm1(labels))
     return 'SMAPE', smape_val, False
 
 ########################
@@ -185,9 +185,9 @@ lgb_params = {'num_leaves': 10,
               'early_stopping_rounds': 200,
               'nthread': -1}
 
-lgbtrain = lgb.Dataset(data=X_train, label=Y_train, feature_name=cols) # train seti bu şekilde oluşturulur bu veri yapısında
+lgbtrain = lgb.Dataset(data=X_train, label=Y_train, feature_name=cols)
 
-lgbval = lgb.Dataset(data=X_val, label=Y_val, reference=lgbtrain, feature_name=cols) # validasyon seti bu şekilde oluşturulur bu veri yapısında
+lgbval = lgb.Dataset(data=X_val, label=Y_val, reference=lgbtrain, feature_name=cols) 
 
 model = lgb.train(lgb_params, lgbtrain,
                   valid_sets=[lgbtrain, lgbval],

@@ -1,24 +1,12 @@
 #####################################################
-# AB Testi ile Bidding Yöntemlerinin Dönüşümünün Karşılaştırılması
+# AB Testi ile Bidding YÃ¶ntemlerinin DÃ¶nÃ¼ÅŸÃ¼mÃ¼nÃ¼n KarÅŸÄ±laÅŸtÄ±rÄ±lmasÄ±
 #####################################################
 
-# İş Problemi
-# Facebook kısa süre önce mevcut "maximum bidding" adı verilen teklif verme türüne alternatif olarak yeni bir teklif türü olan
-# "average bidding"’i tanıttı. Müşterilerimizden biri olan bombabomba.com, bu yeni özelliği test etmeye karar verdi ve average bidding'in
-# maximum bidding'den daha fazla dönüşüm getirip getirmediğini anlamak için bir A/B testi yapmak istiyor. A/B testi 1 aydır devam ediyor
-# ve bombabomba.com şimdi sizden bu A/B testinin sonuçlarını analiz etmenizi bekliyor. Bombabomba.com için nihai başarı ölçütü Purchase'dır. Bu
-# nedenle, istatistiksel testler için Purchase metriğine odaklanılmalıdır.
 
-# Veri Seti Hikayesi
-
-# Bir firmanın web site bilgilerini içeren bu veri setinde kullanıcıların gördükleri ve tıkladıkları reklam sayıları gibi bilgilerin yanı sıra
-# buradan gelen kazanç bilgileri yer almaktadır. Kontrol ve Test grubu olmak üzere iki ayrı veri seti vardır. Bu veri setleri
-# ab_testing.xlsx excel’inin ayrı sayfalarında yer almaktadır. Kontrol grubuna Maximum Bidding, test grubuna Average Bidding uygulanmıştır.
-
-# Impression Reklam görüntüleme sayısı
-# Click Görüntülenen reklama tıklama sayısı
-# Purchase Tıklanan reklamlar sonrası satın alınan ürün sayısı
-# Earning Satın alınan ürünler sonrası elde edilen kazanç
+# Impression Reklam gÃ¶rÃ¼ntÃ¼leme sayÄ±sÄ±
+# Click GÃ¶rÃ¼ntÃ¼lenen reklama tÄ±klama sayÄ±sÄ±
+# Purchase TÄ±klanan reklamlar sonrasÄ± satÄ±n alÄ±nan Ã¼rÃ¼n sayÄ±sÄ±
+# Earning SatÄ±n alÄ±nan Ã¼rÃ¼nler sonrasÄ± elde edilen kazanÃ§
 
 import itertools
 import numpy as np
@@ -35,15 +23,9 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 10)
 pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
-# GÖREV 1: Veriyi Hazırlama ve Analiz Etme
-
-# Adım 1: ab_testing_data.xlsx adlı kontrol ve test grubu verilerinden oluşan veri setini okutunuz. Kontrol ve test grubu verilerini ayrı
-# değişkenlere atayınız.
-
 cont = pd.read_excel(r"C:\Users\Batuhan\Desktop/ab_testing.xlsx", sheet_name="Control Group")
 test = pd.read_excel(r"C:\Users\Batuhan\Desktop/ab_testing.xlsx", sheet_name="Test Group")
 
-# Adım 2: Kontrol ve test grubu verilerini analiz ediniz.
 # control grubu
 cont.head()
 cont.info()
@@ -58,39 +40,27 @@ test.shape
 test["Purchase"].mean()
 test["Purchase"].median()
 
-# Adım 3: Analiz işleminden sonra concat metodunu kullanarak kontrol ve test grubu verilerini birleştiriniz.
-
 df = pd.concat([cont, test], axis=0, ignore_index=True)
 
-# GÖREV  2: A/B Testinin Hipotezinin Tanımlanması
+# HYPOTHESIS
 
-# Adım 1: Hipotezi tanımlayınız.
-
-# H0 : M1 = M2 --> Kontrol ve Test grupları arasında satın almaların ortalaması yönünden istatistiksel olarak anlamlı bir farklılık yoktur.
-# H1 : M1!= M2 --> Fark vardır.
-
-# Adım 2: Kontrol ve test grubu için purchase (kazanç) ortalamalarını analiz ediniz.
+# H0 : M1 = M2 --> Kontrol ve Test gruplarÄ± arasÄ±nda satÄ±n almalarÄ±n ortalamasÄ± yÃ¶nÃ¼nden istatistiksel olarak anlamlÄ± bir farklÄ±lÄ±k yoktur.
+# H1 : M1!= M2 --> Fark vardÄ±r.
 
 cont["Purchase"].mean()
 test["Purchase"].mean()
 
-# GÖREV 3: Hipotez Testinin Gerçekleştirilmesi
+# 1 - Normality:
+# H0: Veriler normal daÄŸÄ±lÄ±ma uymaktadÄ±r.
+# H1: Veriler normal daÄŸÄ±lÄ±ma uymamaktadÄ±r.
 
-# Adım 1: Hipotez testi yapılmadan önce varsayım kontrollerini yapınız.
-# Bunlar Normallik Varsayımı ve Varyans Homojenliğidir. Kontrol ve test grubunun normallik varsayımına uyup uymadığını Purchase değişkeni
-# üzerinden ayrı ayrı test ediniz.
-
-# 1 - Normallik Varsayımı:
-# H0: Veriler normal dağılıma uymaktadır.
-# H1: Veriler normal dağılıma uymamaktadır.
-
-##########################################################  Yoğunluk Grafiği   ##########################################################
+##########################################################  Density Plot   ##########################################################
 purchase = pd.concat([cont["Purchase"], test["Purchase"]], axis=1)
 purchase.columns = ["Purchase_Control", "Purchase_Test"]
 sns.kdeplot(purchase)
-plt.xlabel("Ortalama Satın Alma")
-plt.ylabel("Yoğunluk")
-plt.title("Normal Dağılıma Uygunluk")
+plt.xlabel("Ortalama SatÄ±n Alma")
+plt.ylabel("YoÄŸunluk")
+plt.title("Normal DaÄŸÄ±lÄ±ma Uygunluk")
 ##########################################################################################################################################
 
 
@@ -98,72 +68,52 @@ test_stat, pvalue = shapiro(cont["Purchase"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 if pvalue < 0.05:
-    print("{} < 0.05 olduğu için H0 Reddedilir veriler normal dağılıma uymamaktadır".format(pvalue))
+    print("{} < 0.05 olduÄŸu iÃ§in H0 Reddedilir veriler normal daÄŸÄ±lÄ±ma uymamaktadÄ±r".format(pvalue))
 else:
-    print("{} > 0.05 olduğu için H0 Reddedilemez veriler normal dağılıma uymaktadır".format(pvalue))
+    print("{} > 0.05 olduÄŸu iÃ§in H0 Reddedilemez veriler normal daÄŸÄ±lÄ±ma uymaktadÄ±r".format(pvalue))
 
 test_stat, pvalue2 = shapiro(test["Purchase"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue2))
 
 if pvalue2 < 0.05:
-    print("{} < 0.05 olduğu için H0 Reddedilir. Veriler normal dağılıma uymamaktadır".format(pvalue2))
+    print("{} < 0.05 olduÄŸu iÃ§in H0 Reddedilir. Veriler normal daÄŸÄ±lÄ±ma uymamaktadÄ±r".format(pvalue2))
 else:
-    print("{} > 0.05 olduğu için H0 Reddedilemez. Veriler normal dağılıma uymaktadır".format(pvalue2))
+    print("{} > 0.05 olduÄŸu iÃ§in H0 Reddedilemez. Veriler normal daÄŸÄ±lÄ±ma uymaktadÄ±r".format(pvalue2))
 
 if (pvalue > 0.05) and (pvalue2 > 0.05):
-    print("Normallik varsayımı sağlanmıştır\nVaryans homojenliği varsayımına geçiniz.")
+    print("Normallik varsayÄ±mÄ± saÄŸlanmÄ±ÅŸtÄ±r\nVaryans homojenliÄŸi varsayÄ±mÄ±na geÃ§iniz.")
 else:
-    print("Normallik varsayımı sağlanmamıştır\nNon-parametrik Mann Whitney-U testine geçiniz.")
+    print("Normallik varsayÄ±mÄ± saÄŸlanmamÄ±ÅŸtÄ±r\nNon-parametrik Mann Whitney-U testine geÃ§iniz.")
 
-# Varyans Homojenliği Testi
+# Variance Homogeneity
 # H0: Varyanslar Homojendir
-# H1: Varyanslar Homojen Değildir
+# H1: Varyanslar Homojen DeÄŸildir
 
 test_stat, pvalue = levene(cont["Purchase"], test["Purchase"])
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 if pvalue < 0.05:
-    print("{} < 0.05 olduğu için H0 Reddedilir Varyanslar homojen değildir".format(pvalue))
+    print("{} < 0.05 olduÄŸu iÃ§in H0 Reddedilir Varyanslar homojen deÄŸildir".format(pvalue))
 else:
-    print("{} > 0.05 olduğu için H0 Reddedilemez varyanslar homojendir".format(pvalue))
+    print("{} > 0.05 olduÄŸu iÃ§in H0 Reddedilemez varyanslar homojendir".format(pvalue))
 
-# Adım 2: Normallik Varsayımı ve Varyans Homojenliği sonuçlarına göre uygun testi seçiniz.
-
-# Varsayımlar sağlandığı için bağımsız iki örneklem testi yapılmalıdır.
-
-# Adım 3: Test sonucunda elde edilen p_value değerini göz önünde bulundurarak kontrol ve test grubu satın alma ortalamaları arasında istatistiki
-# olarak anlamlı bir fark olup olmadığını yorumlayınız.
+# VarsayÄ±mlar saÄŸlandÄ±ÄŸÄ± iÃ§in baÄŸÄ±msÄ±z iki Ã¶rneklem testi yapÄ±lmalÄ±dÄ±r.
 
 test_stat, pvalue = ttest_ind(cont["Purchase"], test["Purchase"], equal_var=True)
 print('Test Stat = %.4f, p-value = %.4f' % (test_stat, pvalue))
 
 if pvalue < 0.05:
     print(
-        "{} < 0.05 olduğu için H0 Reddedilir İki grubun ortalamaları arasında istatistiksel olarak \n%95 güven düzeyinde "
-        "anlamlı bir fark vardır.".format(pvalue))
+        "{} < 0.05 olduÄŸu iÃ§in H0 Reddedilir Ä°ki grubun ortalamalarÄ± arasÄ±nda istatistiksel olarak \n%95 gÃ¼ven dÃ¼zeyinde "
+        "anlamlÄ± bir fark vardÄ±r.".format(pvalue))
 else:
     print(
-        "{} > 0.05 olduğu için H0 Reddedilemez İki grubun ortalamaları arasında istatistiksel olarak \n%95 güven düzeyinde "
-        "anlamlı bir fark yoktur.".format(pvalue))
+        "{} > 0.05 olduÄŸu iÃ§in H0 Reddedilemez Ä°ki grubun ortalamalarÄ± arasÄ±nda istatistiksel olarak \n%95 gÃ¼ven dÃ¼zeyinde "
+        "anlamlÄ± bir fark yoktur.".format(pvalue))
 
-# %95 güven düzeyinde satın alma değişkeni açısından iki grubun ortalamaları arasında bir fark yoktur.
-# Yani average bidding ve maximum bidding arasında satın alma ortalamaları açısından bir fark bulunamamıştır.
+# %95 gÃ¼ven dÃ¼zeyinde satÄ±n alma deÄŸiÅŸkeni aÃ§Ä±sÄ±ndan iki grubun ortalamalarÄ± arasÄ±nda bir fark yoktur.
+# Yani average bidding ve maximum bidding arasÄ±nda satÄ±n alma ortalamalarÄ± aÃ§Ä±sÄ±ndan bir fark bulunamamÄ±ÅŸtÄ±r.
 
-# GÖREV 4: Sonuçların Analizi
 
-# Adım 1: Hangi testi kullandınız, sebeplerini belirtiniz.
 
-# Bağımsız İki Örneklem T Testi kullanıldı. Bağımsız iki grubu ortalamaları yönünden karşılaştırmak istediğimiz için bu test kullanıldı.
-
-# Adım 2: Elde ettiğiniz test sonuçlarına göre müşteriye tavsiyede bulununuz.
-
-# Yorum: İki grubun ortalamaları arasında anlamlı bir fark yoktur. Average bidding ve maximum bidding yöntemleri arasında satın almaları
-# etkilemesi açısından bir fark yoktur. Yeni yönteme para yatırmak bir şey kazandırmaz.
-
-df = pd.read_csv(r"C:\Users\Batuhan\Desktop/course_reviews.csv")
-df.loc[df["Progress"], "Rating"].mean()
-df.loc[df["Progress"] <= 10, "Rating"].mean() * 0.22 + \
-df.loc[(df["Progress"] > 10) & (df["Progress"] <= 45), "Rating"].mean() * 0.24 + \
-df.loc[(df["Progress"] > 45) & (df["Progress"] <= 75), "Rating"].mean() * 0.26 + \
-df.loc[(df["Progress"] > 75), "Rating"].mean() * 0.28
 

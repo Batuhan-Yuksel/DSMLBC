@@ -20,17 +20,17 @@ df.drop("Unnamed: 0", axis=1, inplace=True)
 df["transaction_date"] = pd.to_datetime(df["transaction_date"])
 
 
-# • Date Features
+# â€¢ Date Features
 def create_date_features(df, date_column):
     df['month'] = df[date_column].dt.month # ay bilgisi
-    df['day_of_month'] = df[date_column].dt.day # ayın günü
-    df['day_of_year'] = df[date_column].dt.dayofyear # yılın hangi günü
-    df['week_of_year'] = df[date_column].dt.weekofyear # yılın hangi haftası
-    df['day_of_week'] = df[date_column].dt.dayofweek # haftanın hangi günü
-    df['year'] = df[date_column].dt.year # yıl bilgisi
+    df['day_of_month'] = df[date_column].dt.day # ayÃ½n gÃ¼nÃ¼
+    df['day_of_year'] = df[date_column].dt.dayofyear # yÃ½lÃ½n hangi gÃ¼nÃ¼
+    df['week_of_year'] = df[date_column].dt.weekofyear # yÃ½lÃ½n hangi haftasÃ½
+    df['day_of_week'] = df[date_column].dt.dayofweek # haftanÃ½n hangi gÃ¼nÃ¼
+    df['year'] = df[date_column].dt.year # yÃ½l bilgisi
     df["is_wknd"] = df[date_column].dt.weekday // 4 # hafta sonu mu ?
-    df['is_month_start'] = df[date_column].dt.is_month_start.astype(int) # ayın başlangıcı mı ?
-    df['is_month_end'] = df[date_column].dt.is_month_end.astype(int) # ayın sonu mu ?
+    df['is_month_start'] = df[date_column].dt.is_month_start.astype(int) # ayÃ½n baÃ¾langÃ½cÃ½ mÃ½ ?
+    df['is_month_end'] = df[date_column].dt.is_month_end.astype(int) # ayÃ½n sonu mu ?
     df["quarter"] = df[date_column].dt.quarter
     df["is_quarter_start"] = df[date_column].dt.is_quarter_start.astype(int)
     df["is_quarter_end"] = df[date_column].dt.is_quarter_end.astype(int)
@@ -40,7 +40,7 @@ def create_date_features(df, date_column):
 
 df = create_date_features(df, "transaction_date")
 
-# • Lag/Shifted Features
+# â€¢ Lag/Shifted Features
 
 def random_noise(dataframe):
     return np.random.normal(scale=1.6, size=(len(dataframe),))
@@ -82,7 +82,7 @@ lags = [91,92,178,179,180,181,182,359,360,361,449,450,451,539,540,541,629,630,63
 
 df = ewm_features(df, alphas, lags)
 
-# Özel Günler
+# Ã–zel GÃ¼nler
 # Black Friday
 
 df["is_black_friday"] = 0
@@ -168,7 +168,7 @@ y_pred_val = model.predict(X_val, num_iteration=model.best_iteration)
 smape(np.expm1(y_pred_val), np.expm1(Y_val))
 
 ########################
-# Değişken önem düzeyleri
+# DeÃ°iÃ¾ken Ã¶nem dÃ¼zeyleri
 ########################
 
 def plot_lgb_importances(model, plot=False, num=10):

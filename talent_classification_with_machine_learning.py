@@ -1,42 +1,40 @@
-# MAKİNE ÖĞRENMESİ İLE YETENEK AVCILIĞI SINIFLANDIRMA
+# MAKÄ°NE Ã–ÄRENMESÄ° Ä°LE YETENEK AVCILIÄI SINIFLANDIRMA
 
-# İŞ PROBLEMİ
-
-# Scout’lar tarafından izlenen futbolcuların özelliklerine verilen puanlara göre, oyuncuların hangi sınıf
-# (average, highlighted) oyuncu olduğunu tahminleme.
+# Scoutâ€™lar tarafÄ±ndan izlenen futbolcularÄ±n Ã¶zelliklerine verilen puanlara gÃ¶re, oyuncularÄ±n hangi sÄ±nÄ±f
+# (average, highlighted) oyuncu olduÄŸunu tahminleme.
 
 # Veri Seti Hikayesi
 
-# Veri seti Scoutium’dan maçlarda gözlemlenen futbolcuların özelliklerine göre scoutların değerlendirdikleri futbolcuların, maç
-# içerisinde puanlanan özellikleri ve puanlarını içeren bilgilerden oluşmaktadır.
+# Veri seti Scoutiumâ€™dan maÃ§larda gÃ¶zlemlenen futbolcularÄ±n Ã¶zelliklerine gÃ¶re scoutlarÄ±n deÄŸerlendirdikleri futbolcularÄ±n, maÃ§
+# iÃ§erisinde puanlanan Ã¶zellikleri ve puanlarÄ±nÄ± iÃ§eren bilgilerden oluÅŸmaktadÄ±r.
 
 
 # scoutium_attributes.csv
-# task_response_id Bir scoutun bir maçta bir takımın kadrosundaki tüm oyunculara dair değerlendirmelerinin kümesi
-# match_id İlgili maçın id'si
-# evaluator_id Değerlendiricinin(scout'un) id'si
-# player_id İlgili oyuncunun id'si
-# position_id İlgili oyuncunun o maçta oynadığı pozisyonun id’si
+# task_response_id Bir scoutun bir maÃ§ta bir takÄ±mÄ±n kadrosundaki tÃ¼m oyunculara dair deÄŸerlendirmelerinin kÃ¼mesi
+# match_id Ä°lgili maÃ§Ä±n id'si
+# evaluator_id DeÄŸerlendiricinin(scout'un) id'si
+# player_id Ä°lgili oyuncunun id'si
+# position_id Ä°lgili oyuncunun o maÃ§ta oynadÄ±ÄŸÄ± pozisyonun idâ€™si
 # 1: Kaleci
 # 2: Stoper
-# 3: Sağ bek
+# 3: SaÄŸ bek
 # 4: Sol bek
 # 5: Defansif orta saha
 # 6: Merkez orta saha
-# 7: Sağ kanat
+# 7: SaÄŸ kanat
 # 8: Sol kanat
 # 9: Ofansif orta saha
 # 10: Forvet
-# analysis_id Bir scoutun bir maçta bir oyuncuya dair özellik değerlendirmelerini içeren küme
-# attribute_id Oyuncuların değerlendirildiği her bir özelliğin id'si
-# attribute_value Bir scoutun bir oyuncunun bir özelliğine verdiği değer(puan)
+# analysis_id Bir scoutun bir maÃ§ta bir oyuncuya dair Ã¶zellik deÄŸerlendirmelerini iÃ§eren kÃ¼me
+# attribute_id OyuncularÄ±n deÄŸerlendirildiÄŸi her bir Ã¶zelliÄŸin id'si
+# attribute_value Bir scoutun bir oyuncunun bir Ã¶zelliÄŸine verdiÄŸi deÄŸer(puan)
 
 # scoutium_potential_labels.csv
-# task_response_id Bir scoutun bir maçta bir takımın kadrosundaki tüm oyunculara dair değerlendirmelerinin kümesi
-# match_id İlgili maçın id'si
-# evaluator_id Değerlendiricinin(scout'un) id'si
-# player_id İlgili oyuncunun id'si
-# potential_label Bir scoutun bir maçta bir oyuncuyla ilgili nihai kararını belirten etiket. (hedef değişken)
+# task_response_id Bir scoutun bir maÃ§ta bir takÄ±mÄ±n kadrosundaki tÃ¼m oyunculara dair deÄŸerlendirmelerinin kÃ¼mesi
+# match_id Ä°lgili maÃ§Ä±n id'si
+# evaluator_id DeÄŸerlendiricinin(scout'un) id'si
+# player_id Ä°lgili oyuncunun id'si
+# potential_label Bir scoutun bir maÃ§ta bir oyuncuyla ilgili nihai kararÄ±nÄ± belirten etiket. (hedef deÄŸiÅŸken)
 
 from warnings import filterwarnings
 import warnings
@@ -50,39 +48,20 @@ import seaborn as sns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-# Görevler
-
-# Adım 1: scoutium_attributes.csv ve scoutium_potential_labels.csv dosyalarını okutunuz.
 attributes = pd.read_csv(r"C:\Users\Batuhan\Desktop\scoutium_attributes.csv", sep=";")
 potential = pd.read_csv(r"C:\Users\Batuhan\Desktop\scoutium_potential_labels.csv", sep=";")
 
 
-
-# Adım 2: Okutmuş olduğumuz csv dosyalarını merge fonksiyonunu kullanarak birleştiriniz.
-# ("task_response_id", 'match_id', 'evaluator_id' "player_id" 4 adet değişken üzerinden birleştirme işlemini gerçekleştiriniz.)
-
 df_ = pd.merge(attributes, potential, on=["task_response_id", 'match_id', 'evaluator_id', "player_id"])
 df = df_.copy()
-
-# Adım 3: position_id içerisindeki Kaleci (1) sınıfını veri setinden kaldırınız.
 
 df = df[~(df["position_id"] == 1)]
 df.reset_index(inplace=True, drop=True)
 
-# Adım 4: potential_label içerisindeki below_average sınıfını veri setinden kaldırınız.( below_average sınıfı tüm verisetinin %1'ini oluşturur)
-
 df = df[~(df["potential_label"] == "below_average")]
 df.reset_index(inplace=True, drop=True)
 
-# Adım 5: Oluşturduğunuz veri setinden “pivot_table” fonksiyonunu kullanarak bir tablo oluşturunuz. Bu pivot table'da her satırda bir oyuncu
-# olacak şekilde manipülasyon yapınız
-    # Adım 1: İndekste “player_id”,“position_id” ve “potential_label”, sütunlarda “attribute_id” ve değerlerde scout’ların oyunculara verdiği
-    # puan “attribute_value” olacak şekilde pivot table’ı oluşturunuz.
-
 pivot_df = df.pivot_table(index=["player_id","position_id","potential_label"], columns="attribute_id", values="attribute_value")
-
-    # Adım 2: “reset_index” fonksiyonunu kullanarak indeksleri değişken olarak atayınız ve “attribute_id” sütunlarının isimlerini
-    # stringe çeviriniz.
 
 pivot_df.reset_index(inplace=True)
 
@@ -90,8 +69,6 @@ for i in range(0, len(pivot_df.columns)):
     pivot_df.rename(columns={pivot_df.columns[i]: str(pivot_df.columns[i])}, inplace=True)
 
 df = pivot_df[:]
-
-# Adım 6: Label Encoder fonksiyonunu kullanarak “potential_label” kategorilerini (average, highlighted) sayısal olarak ifade ediniz.
 
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
@@ -102,9 +79,6 @@ def label_encoder(dataframe, binary_col):
 
 df = label_encoder(df, "potential_label")
 
-# Adım 7: Sayısal değişken kolonlarını “num_cols” adıyla bir listeye atayınız.
-
-
 for i in range(0, len(df["position_id"])):
     df["position_id"][i] = str(df["position_id"][i])
 
@@ -113,26 +87,26 @@ df["position_id"] = df["position_id"].astype(str)
 def grab_col_names(dataframe, cat_th=8, car_th=20):
     """
 
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal değişkenlerin isimlerini verir.
-    Not: Kategorik değişkenlerin içerisine numerik görünümlü kategorik değişkenler de dahildir.
+    Veri setindeki kategorik, numerik ve kategorik fakat kardinal deÄŸiÅŸkenlerin isimlerini verir.
+    Not: Kategorik deÄŸiÅŸkenlerin iÃ§erisine numerik gÃ¶rÃ¼nÃ¼mlÃ¼ kategorik deÄŸiÅŸkenler de dahildir.
 
     Parameters
     ------
         dataframe: dataframe
-                Değişken isimleri alınmak istenilen dataframe
+                DeÄŸiÅŸken isimleri alÄ±nmak istenilen dataframe
         cat_th: int, optional
-                numerik fakat kategorik olan değişkenler için sınıf eşik değeri
+                numerik fakat kategorik olan deÄŸiÅŸkenler iÃ§in sÄ±nÄ±f eÅŸik deÄŸeri
         car_th: int, optinal
-                kategorik fakat kardinal değişkenler için sınıf eşik değeri
+                kategorik fakat kardinal deÄŸiÅŸkenler iÃ§in sÄ±nÄ±f eÅŸik deÄŸeri
 
     Returns
     ------
         cat_cols: list
-                Kategorik değişken listesi
+                Kategorik deÄŸiÅŸken listesi
         num_cols: list
-                Numerik değişken listesi
+                Numerik deÄŸiÅŸken listesi
         cat_but_car: list
-                Kategorik görünümlü kardinal değişken listesi
+                Kategorik gÃ¶rÃ¼nÃ¼mlÃ¼ kardinal deÄŸiÅŸken listesi
 
     Examples
     ------
@@ -143,9 +117,9 @@ def grab_col_names(dataframe, cat_th=8, car_th=20):
 
     Notes
     ------
-        cat_cols + num_cols + cat_but_car = toplam değişken sayısı
-        num_but_cat cat_cols'un içerisinde.
-        Return olan 3 liste toplamı toplam değişken sayısına eşittir: cat_cols + num_cols + cat_but_car = değişken sayısı
+        cat_cols + num_cols + cat_but_car = toplam deÄŸiÅŸken sayÄ±sÄ±
+        num_but_cat cat_cols'un iÃ§erisinde.
+        Return olan 3 liste toplamÄ± toplam deÄŸiÅŸken sayÄ±sÄ±na eÅŸittir: cat_cols + num_cols + cat_but_car = deÄŸiÅŸken sayÄ±sÄ±
 
     """
 
@@ -188,16 +162,11 @@ df = one_hot_encoder(df, cat_cols)
 num_cols = [col for col in num_cols  if "player_id" not in col]
 num_cols = [col for col in num_cols if "position_id" not in col]
 
-# Adım 8: Kaydettiğiniz bütün “num_cols” değişkenlerindeki veriyi ölçeklendirmek için StandardScaler uygulayınız.
-
-
+# Standardization
 ss = StandardScaler()
 df[num_cols] = ss.fit_transform(df[num_cols])
 
-
-
-# Adım 9: Elimizdeki veri seti üzerinden minimum hata ile futbolcuların potansiyel etiketlerini tahmin eden bir makine öğrenmesi modeli
-# geliştiriniz. (Roc_auc, f1, precision, recall, accuracy metriklerini yazdırınız.)
+# Machine Learning Modelling
 
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier, AdaBoostClassifier
 from sklearn.linear_model import LogisticRegression

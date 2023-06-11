@@ -1,27 +1,17 @@
 ##################################
-# # # # # BATUHAN YÜKSEL # # # # #
+# # # # # BATUHAN YÃœKSEL # # # # #
 ##################################
 
 
-# İŞ PROBLEMİ
-
-# Özellikleri belirtildiğinde kişilerin diyabet hastası olup olmadıklarını tahmin  edebilecek bir makine öğrenmesi modeli geliştirilmesi
-# istenmektedir. Modeli  geliştirmeden önce gerekli olan veri analizi ve özellik mühendisliği adımlarını gerçekleştirmeniz beklenmektedir
-
-# Veri seti ABD'deki Ulusal Diyabet-Sindirim-Böbrek Hastalıkları Enstitüleri'nde tutulan büyük veri setinin parçasıdır. ABD'deki
-# Arizona Eyaleti'nin en büyük 5. şehri olan Phoenix şehrinde yaşayan 21 yaş ve üzerinde olan Pima Indian kadınları üzerinde
-# yapılan diyabet araştırması için kullanılan verilerdir.
-# Hedef değişken "outcome" olarak belirtilmiş olup; 1 diyabet test sonucunun pozitif oluşunu, 0 ise negatif oluşunu belirtmektedir.
-
-# Pregnancies: Hamilelik sayısı
+# Pregnancies: Hamilelik sayÄ±sÄ±
 # Glucose: Oral glikoz tolerans testinde 2 saatlik plazma glikoz konsantrasyonu
-# Blood Pressure: Kan Basıncı (Küçük tansiyon) (mm Hg)
-# SkinThickness: Cilt Kalınlığı
-# Insulin: 2 saatlik serum insülini (mu U/ml)
+# Blood Pressure: Kan BasÄ±ncÄ± (KÃ¼Ã§Ã¼k tansiyon) (mm Hg)
+# SkinThickness: Cilt KalÄ±nlÄ±ÄŸÄ±
+# Insulin: 2 saatlik serum insÃ¼lini (mu U/ml)
 # DiabetesPedigreeFunction: Fonksiyon (Oral glikoz tolerans testinde 2 saatlik plazma glikoz konsantrasyonu)
-# BMI: Vücut kitle endeksi
-# Age: Yaş (yıl)
-# Outcome: Hastalığa sahip (1) ya da değil (0)
+# BMI: VÃ¼cut kitle endeksi
+# Age: YaÅŸ (yÄ±l)
+# Outcome: HastalÄ±ÄŸa sahip (1) ya da deÄŸil (0)
 
 import numpy as np
 import pandas as pd
@@ -40,11 +30,6 @@ pd.set_option('display.max_rows', None)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.set_option('display.width', 500)
 
-# PROJE GÖREVLERİ
-
-# GÖREV 1 : Keşifçi Veri Analizi
-# Adım 1: Genel resmi inceleyiniz.
-
 df = pd.read_csv(r"C:\Users\Batuhan\Desktop\MIUUL\7. Hafta\diabetes\diabetes.csv")
 df.shape
 df.head()
@@ -55,31 +40,30 @@ df.isnull().sum()
 df.isnull().sum().sum()
 df.describe().T
 
-# Adım 2: Numerik ve kategorik değişkenleri yakalayınız.
 
 def grab_col_names(dataframe, cat_th=10, car_th=20):
     """
 
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal değişkenlerin isimlerini verir.
-    Not: Kategorik değişkenlerin içerisine numerik görünümlü kategorik değişkenler de dahildir.
+    Veri setindeki kategorik, numerik ve kategorik fakat kardinal deÄŸiÅŸkenlerin isimlerini verir.
+    Not: Kategorik deÄŸiÅŸkenlerin iÃ§erisine numerik gÃ¶rÃ¼nÃ¼mlÃ¼ kategorik deÄŸiÅŸkenler de dahildir.
 
     Parameters
     ------
         dataframe: dataframe
-                Değişken isimleri alınmak istenilen dataframe
+                DeÄŸiÅŸken isimleri alÄ±nmak istenilen dataframe
         cat_th: int, optional
-                numerik fakat kategorik olan değişkenler için sınıf eşik değeri
+                numerik fakat kategorik olan deÄŸiÅŸkenler iÃ§in sÄ±nÄ±f eÅŸik deÄŸeri
         car_th: int, optinal
-                kategorik fakat kardinal değişkenler için sınıf eşik değeri
+                kategorik fakat kardinal deÄŸiÅŸkenler iÃ§in sÄ±nÄ±f eÅŸik deÄŸeri
 
     Returns
     ------
         cat_cols: list
-                Kategorik değişken listesi
+                Kategorik deÄŸiÅŸken listesi
         num_cols: list
-                Numerik değişken listesi
+                Numerik deÄŸiÅŸken listesi
         cat_but_car: list
-                Kategorik görünümlü kardinal değişken listesi
+                Kategorik gÃ¶rÃ¼nÃ¼mlÃ¼ kardinal deÄŸiÅŸken listesi
 
     Examples
     ------
@@ -90,9 +74,9 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
 
     Notes
     ------
-        cat_cols + num_cols + cat_but_car = toplam değişken sayısı
-        num_but_cat cat_cols'un içerisinde.
-        Return olan 3 liste toplamı toplam değişken sayısına eşittir: cat_cols + num_cols + cat_but_car = değişken sayısı
+        cat_cols + num_cols + cat_but_car = toplam deÄŸiÅŸken sayÄ±sÄ±
+        num_but_cat cat_cols'un iÃ§erisinde.
+        Return olan 3 liste toplamÄ± toplam deÄŸiÅŸken sayÄ±sÄ±na eÅŸittir: cat_cols + num_cols + cat_but_car = deÄŸiÅŸken sayÄ±sÄ±
 
     """
 
@@ -103,13 +87,13 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
     cat_but_car = [col for col in dataframe.columns if dataframe[col].nunique() > car_th and
                    dataframe[col].dtypes == "O"]
     cat_cols = cat_cols + num_but_cat
-    # kategorik değişkenlerde gez ama kategorik görünüp aslında kardinal olanları alma diyoruz.
+    # kategorik deÄŸiÅŸkenlerde gez ama kategorik gÃ¶rÃ¼nÃ¼p aslÄ±nda kardinal olanlarÄ± alma.
     cat_cols = [col for col in cat_cols if col not in cat_but_car]
 
     # num_cols
-    # veri tipi object'ten farklı olanları getirdik.
+    # veri tipi object'ten farklÄ± olanlarÄ± getir.
     num_cols = [col for col in dataframe.columns if dataframe[col].dtypes != "O"]
-    # sayısal değişkenlerde gez ama sayısal görünüp aslında kategorik olanları çıkar diyoruz.
+    # sayÄ±sal deÄŸiÅŸkenlerde gez ama sayÄ±sal gÃ¶rÃ¼nÃ¼p aslÄ±nda kategorik olanlarÄ± Ã§Ä±kar.
     num_cols = [col for col in num_cols if col not in num_but_cat]
 
     print(f"Observations: {dataframe.shape[0]}")
@@ -123,15 +107,14 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 for col in df.columns:
-    print("Değişken:", col, "----->   Eşsiz değerlerinin sayısı:", df[col].nunique())
+    print("DeÄŸiÅŸken:", col, "----->   EÅŸsiz deÄŸerlerinin sayÄ±sÄ±:", df[col].nunique())
 
 for col in df.columns:
-    print("Değişken:", col, "----->   Eşsiz değerlerinin sayısı:", len(df[col].unique()))
+    print("DeÄŸiÅŸken:", col, "----->   EÅŸsiz deÄŸerlerinin sayÄ±sÄ±:", len(df[col].unique()))
 
-# Kategorik değişken ve hedef değişken:  Outcome
-# Numerik değişkenler: 'Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'
+# Kategorik deÄŸiÅŸken ve hedef deÄŸiÅŸken:  Outcome
+# Numerik deÄŸiÅŸkenler: 'Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'
 
-# Adım 3: Numerik ve kategorik değişkenlerin analizini yapınız.
 
 def check_df(dataframe, head=5):
     print("----- Shape -----")
@@ -150,19 +133,13 @@ def check_df(dataframe, head=5):
 check_df(df[num_cols])
 check_df(df[cat_cols])
 
-# Adım 4: Hedef değişken analizi yapınız. (Kategorik değişkenlere göre hedef değişkenin ortalaması, hedef değişkene göre
-# numerik değişkenlerin ortalaması)
-
-# Tek kategorik değişken aynı zamanda hedef değişkendir.
-# hedef değişkene göre numerik değişkenlerin ortalaması
 df.groupby("Outcome")[num_cols].mean()
 
-# Adım 5: Aykırı gözlem analizi yapınız.
+# Outlier Analysis
 
 df.describe().T
 df.describe([0.01, 0.05, 0.25, 0.50, 0.75, 0.95, 0.99]).T
 
-# eşik değerleri belirleyelim
 def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -173,7 +150,7 @@ def outlier_thresholds(dataframe, col_name, q1=0.25, q3=0.75):
 
 outlier_thresholds(df, num_cols)
 
-# aykırı değer kontrolü
+# aykÄ±rÄ± deÄŸer kontrolÃ¼
 def check_outlier(dataframe, col_name):
     low_limit, up_limit = outlier_thresholds(dataframe, col_name)
     if dataframe[(dataframe[col_name] > up_limit) | (dataframe[col_name] < low_limit)].any(axis=None):
@@ -185,39 +162,32 @@ check_outlier(df, num_cols)
 
 for col in num_cols:
     print(col, check_outlier(df, col))
-# Sonuç: True. Aykırı değer var.
+# SonuÃ§: True. AykÄ±rÄ± deÄŸer var.
 
-# Adım 6: Eksik gözlem analizi yapınız.
-
+# Missing values
 def missing_values_table(dataframe, na_name=False):
     na_columns = [col for col in dataframe.columns if dataframe[col].isnull().sum() > 0]
-    # ilk olarak eksik gözlem barındıran değişkenler seçildi
+    # ilk olarak eksik gÃ¶zlem barÄ±ndÄ±ran deÄŸiÅŸkenler seÃ§ildi
     n_miss = dataframe[na_columns].isnull().sum().sort_values(ascending=False)
     ratio = (dataframe[na_columns].isnull().sum() / dataframe.shape[0] * 100).sort_values(ascending=False)
-    # daha sonra sayılarını ve yüzdelik değerlerini bir df içine atalım
+    # daha sonra sayÄ±larÄ±nÄ± ve yÃ¼zdelik deÄŸerlerini bir df iÃ§ine atalÄ±m
     missing_df = pd.concat([n_miss, np.round(ratio, 2)], axis=1, keys=['n_miss', 'ratio'])
     print(missing_df, end="\n")
 
-    if na_name: # na_name argümanı eksik değerlerin barındığı değişkenlerin isimlerini ver dedik eğer True girilirse verir
+    if na_name:
         return na_columns
 
 missing_values_table(df)
 
-# Eksik gözlem yoktur.
+# Eksik gÃ¶zlem yoktur.
 
-# Adım 7: Korelasyon analizi yapınız.
+# Correlation
 
 corr_df = df.corr()
 corr_df.sort_values(by="Outcome",ascending=False)
-# Outcome ve glucose değişkeni arasında %46.7'lik bir ilişki var.
+# Outcome ve glucose deÄŸiÅŸkeni arasÄ±nda %46.7'lik bir iliÅŸki var.
 
-# GÖREV 2: Feature Engineering
-
-# Adım 1: Eksik ve aykırı değerler için gerekli işlemleri yapınız. Veri setinde eksik gözlem bulunmamakta ama Glikoz, Insulin vb.
-# değişkenlerde 0 değeri içeren gözlem birimleri eksik değeri ifade ediyor olabilir. Örneğin; bir kişinin glikoz veya insulin değeri 0
-# olamayacaktır. Bu durumu dikkate alarak sıfır değerlerini ilgili değerlerde NaN olarak atama yapıp sonrasında eksik
-# değerlere işlemleri uygulayabilirsiniz.
-
+# Feature Engineering
 
 def replace_with_thresholds(dataframe, variable):
     low_limit, up_limit = outlier_thresholds(dataframe, variable)
@@ -230,23 +200,22 @@ def change_integer(y):
 x = 5
 change_integer(8)
 
-# aykırı değer kontrolü
+# aykÄ±rÄ± deÄŸer kontrolÃ¼
 for col in num_cols:
     print(col, check_outlier(df, col))
 
-# aykırı değerleri baskılama
+# aykÄ±rÄ± deÄŸerleri baskÄ±lama
 for col in num_cols:
     replace_with_thresholds(df, col)
 
-# aykırı değerleri tekrar kontrol edelim
+# aykÄ±rÄ± deÄŸer kontrolÃ¼
 for col in num_cols:
     print(col, check_outlier(df, col))
-# aykırı değerler baskılandı
+# aykÄ±rÄ± deÄŸerler baskÄ±landÄ±
 
-# pregnancies değişkeninde 0 değeri olabilir o yüzden num_cols içinden çıkartılır.
 num_cols = [col for col in num_cols if col not in "Pregnancies"]
 
-# 0 değerlerini NaN ile değiştirelim
+# 0 to NaN
 # for col in num_cols:
 #    df[col].replace(0, np.nan, inplace=True)
 
@@ -255,10 +224,9 @@ def zero_to_nan(dataframe, num_cols):
         dataframe[col].replace(0, np.nan, inplace=True)
 
 zero_to_nan(df,num_cols)
-# 0 değerleri NaN ile değiştirildi
+
 df.isnull().sum()
 
-# SkinThickness ve Insulin değişkeninde eksik değerler var
 for col in num_cols:
     if df[col].isnull().sum() < (df.shape[0]/10):
         df = df.loc[~(df[col].isnull())]
@@ -267,16 +235,12 @@ for col in num_cols:
         # df[col] = df[col].fillna(df.groupby("Pregnancies")[col].transform("mean"))
 df.groupby("Outcome")["Insulin", "SkinThickness"].mean()
 df.isnull().sum()
-# eksik değerler giderildi.
 
-# Adım 2: Yeni değişkenler oluşturunuz.
-
-df.head()
-
+# New Features
 df["Age_Cat"] = pd.cut(df["Age"], bins=[df["Age"].min(),36,55,df["Age"].max()+1], labels=["Young","Adult","Old"], right=False)
 
 df["NumberOfPregnancy"] = pd.cut(df["Pregnancies"], bins=[df["Pregnancies"].min(),4,8,df["Pregnancies"].max()+1],right=False,
-                                 labels=["Normal","Çok","Aşırı"])
+                                 labels=["Normal","Ã‡ok","AÅŸÄ±rÄ±"])
 
 def calculate_bmi(col):
     if col["BMI"] < 18.5:
@@ -302,7 +266,7 @@ df.loc[(df['BMI'] >= 30) & (df['Age'] >= 56), 'NEW_AGE_BMI'] = 'seniorobese'
 
 df.head()
 
-# Adım 3: Encoding işlemlerini gerçekleştiriniz.
+# Encoding
 
 df["Age_Cat"].value_counts()
 df["NumberOfPregnancy"].value_counts()
@@ -319,7 +283,7 @@ def cat_summary(dataframe, col_name, plot=False):
                         "Ratio": 100 * dataframe[col_name].value_counts() / len(dataframe)}))
 cat_summary(df, "Age_Cat")
 cat_summary(df, "NumberOfPregnancy")
-# Rare Encoding yapmaya gerek yok
+
 
 # One Hot Encoding
 ohe_cols = [col for col in df.columns if 10 >= df[col].nunique() > 2]
@@ -329,7 +293,7 @@ def one_hot_encoder(dataframe, categorical_cols, drop_first=True):
     return dataframe
 
 df = one_hot_encoder(df, ohe_cols)
-df.head()
+
 cat_cols, num_cols, cat_but_car = grab_col_names(df)
 
 
@@ -342,12 +306,10 @@ def rare_analyser(dataframe, target, cat_cols):
 
 rare_analyser(df, "Outcome", cat_cols)
 
-# iki sınıflı olup sınıfların bir tanesinin oranı 0.01'den az olan var mı ?
 useless_cols = [col for col in df.columns if df[col].nunique() == 2 and
                 (df[col].value_counts() / len(df) < 0.01).any(axis=None)]
-# Yok
 
-# Adım 4: Numerik değişkenler için standartlaştırma yapınız.
+# Standardization
 check_outlier(df, num_cols)
 df.describe().T
 for col in num_cols:
@@ -364,7 +326,7 @@ df[num_cols].head()
 # for col in num_cols:
 #    df[col + "_min_max_scaler"] = mms.fit_transform(df[[col]])
 
-# Adım 5: Model oluşturunuz.
+# Modelling
 df.head()
 y = df["Outcome"]
 X = df.drop(["Outcome"], axis=1)
@@ -376,7 +338,7 @@ from sklearn.ensemble import RandomForestClassifier
 rf_model = RandomForestClassifier(random_state=46).fit(X_train, y_train)
 y_pred = rf_model.predict(X_test)
 accuracy_score(y_pred, y_test)
-# %86 doğruluk
+# %86 accuracy
 
 def plot_importance(model, features, num=len(X), save=False):
     feature_imp = pd.DataFrame({'Value': model.feature_importances_, 'Feature': features.columns})

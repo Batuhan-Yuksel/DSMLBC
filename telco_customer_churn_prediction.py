@@ -1,41 +1,32 @@
 ##################################
-# # # # # BATUHAN YÜKSEL # # # # #
+# # # # # BATUHAN YÃœKSEL # # # # #
 ##################################
 
 # TELCO CUSTOMER CHURN
 
-# İş Problemi
-
-# Şirketi terk edecek müşterileri tahmin edebilecek bir makine öğrenmesi modeli geliştirilmesi beklenmektedir.
-
-# Veri Seti Hikayesi
-
-# Telco müşteri kaybı verileri, üçüncü çeyrekte Kaliforniya'daki 7043 müşteriye ev telefonu ve İnternet hizmetleri sağlayan hayali
-# bir telekom şirketi hakkında bilgi içerir. Hangi müşterilerin hizmetlerinden ayrıldığını, kaldığını veya hizmete kaydolduğunu
-# gösterir.
 
 
-# CustomerId: Müşteri İd’si
+# CustomerId: MÃ¼Ã¾teri Ãdâ€™si
 # Gender: Cinsiyet
-# SeniorCitizen: Müşterinin yaşlı olup olmadığı (1, 0)
-# Partner: Müşterinin bir ortağı olup olmadığı (Evet, Hayır)
-# Dependents: Müşterinin bakmakla yükümlü olduğu kişiler olup olmadığı (Evet, Hayır
-# tenure: Müşterinin şirkette kaldığı ay sayısı
-# PhoneService: Müşterinin telefon hizmeti olup olmadığı (Evet, Hayır)
-# MultipleLines: Müşterinin birden fazla hattı olup olmadığı (Evet, Hayır, Telefon hizmeti yok)
-# InternetService: Müşterinin internet servis sağlayıcısı (DSL, Fiber optik, Hayır)
-# OnlineSecurity: Müşterinin çevrimiçi güvenliğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# OnlineBackup: Müşterinin online yedeğinin olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# DeviceProtection: Müşterinin cihaz korumasına sahip olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# TechSupport: Müşterinin teknik destek alıp almadığı (Evet, Hayır, İnternet hizmeti yok)
-# StreamingTV: Müşterinin TV yayını olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# StreamingMovies: Müşterinin film akışı olup olmadığı (Evet, Hayır, İnternet hizmeti yok)
-# Contract: Müşterinin sözleşme süresi (Aydan aya, Bir yıl, İki yıl)
-# PaperlessBilling: Müşterinin kağıtsız faturası olup olmadığı (Evet, Hayır)
-# PaymentMethod: Müşterinin ödeme yöntemi (Elektronik çek, Posta çeki, Banka havalesi (otomatik), Kredi kartı (otomatik))
-# MonthlyCharges: Müşteriden aylık olarak tahsil edilen tutar
-# TotalCharges: Müşteriden tahsil edilen toplam tutar
-# Churn: Müşterinin kullanıp kullanmadığı (Evet veya Hayır)
+# SeniorCitizen: MÃ¼Ã¾terinin yaÃ¾lÃ½ olup olmadÃ½Ã°Ã½ (1, 0)
+# Partner: MÃ¼Ã¾terinin bir ortaÃ°Ã½ olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r)
+# Dependents: MÃ¼Ã¾terinin bakmakla yÃ¼kÃ¼mlÃ¼ olduÃ°u kiÃ¾iler olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r
+# tenure: MÃ¼Ã¾terinin Ã¾irkette kaldÃ½Ã°Ã½ ay sayÃ½sÃ½
+# PhoneService: MÃ¼Ã¾terinin telefon hizmeti olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r)
+# MultipleLines: MÃ¼Ã¾terinin birden fazla hattÃ½ olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Telefon hizmeti yok)
+# InternetService: MÃ¼Ã¾terinin internet servis saÃ°layÃ½cÃ½sÃ½ (DSL, Fiber optik, HayÃ½r)
+# OnlineSecurity: MÃ¼Ã¾terinin Ã§evrimiÃ§i gÃ¼venliÃ°inin olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# OnlineBackup: MÃ¼Ã¾terinin online yedeÃ°inin olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# DeviceProtection: MÃ¼Ã¾terinin cihaz korumasÃ½na sahip olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# TechSupport: MÃ¼Ã¾terinin teknik destek alÃ½p almadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# StreamingTV: MÃ¼Ã¾terinin TV yayÃ½nÃ½ olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# StreamingMovies: MÃ¼Ã¾terinin film akÃ½Ã¾Ã½ olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r, Ãnternet hizmeti yok)
+# Contract: MÃ¼Ã¾terinin sÃ¶zleÃ¾me sÃ¼resi (Aydan aya, Bir yÃ½l, Ãki yÃ½l)
+# PaperlessBilling: MÃ¼Ã¾terinin kaÃ°Ã½tsÃ½z faturasÃ½ olup olmadÃ½Ã°Ã½ (Evet, HayÃ½r)
+# PaymentMethod: MÃ¼Ã¾terinin Ã¶deme yÃ¶ntemi (Elektronik Ã§ek, Posta Ã§eki, Banka havalesi (otomatik), Kredi kartÃ½ (otomatik))
+# MonthlyCharges: MÃ¼Ã¾teriden aylÃ½k olarak tahsil edilen tutar
+# TotalCharges: MÃ¼Ã¾teriden tahsil edilen toplam tutar
+# Churn: MÃ¼Ã¾terinin kullanÃ½p kullanmadÃ½Ã°Ã½ (Evet veya HayÃ½r)
 
 import numpy as np
 import pandas as pd
@@ -45,7 +36,6 @@ import matplotlib.pyplot as plt
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-# GÖREV 1: Keşifçi Veri Analizi
 
 telco = pd.read_csv(r"C:\Users\Batuhan\Desktop\TelcoChurn\Telco-Customer-Churn.csv")
 df = telco.copy()
@@ -60,11 +50,8 @@ for col in df.columns:
     print(" ",col, "nunique: ",df[col].nunique(), " ", df[col].dtype)
 
 for col in df.columns:
-    print("{} değişkeninin eşsiz değer sayısı: {}".format(col, df[col].nunique()))
+    print("{} deÃ°iÃ¾keninin eÃ¾siz deÃ°er sayÃ½sÃ½: {}".format(col, df[col].nunique()))
 
-
-
-# Adım 1: Numerik ve kategorik değişkenleri yakalayınız.
 
 cat_cols = [col for col in df.columns if df[col].nunique() < 10]
 
@@ -78,16 +65,12 @@ cat_cols = [col for col in cat_cols if col not in cat_but_car]
 
 cat_cols = cat_cols + num_but_cat
 
-# Adım 2: Gerekli düzenlemeleri yapınız. (Tip hatası olan değişkenler gibi)
-
 df.replace(" ", np.nan, inplace=True)
 df["TotalCharges"] = pd.to_numeric(df["TotalCharges"])
 df["SeniorCitizen"] = df["SeniorCitizen"].astype(object)
 df["Churn"] = [1 if i == "Yes" else 0 for i in df["Churn"]]
 df["Churn"] = df["Churn"].astype(int)
 
-
-# Adım 3: Numerik ve kategorik değişkenlerin veri içindeki dağılımını gözlemleyiniz.
 
 def check_df(dataframe, head=5):
     print("----- Shape -----")
@@ -106,15 +89,12 @@ def check_df(dataframe, head=5):
 check_df(df[num_cols])
 check_df(df[cat_cols])
 
-# Adım 4: Kategorik değişkenler ile hedef değişken incelemesini yapınız.
 
 for col in cat_cols:
     if col != "Churn":
         print(df.groupby("Churn")[col].value_counts())
         print("-------------------------------")
 
-
-# Adım 5: Aykırı gözlem var mı inceleyiniz.
 
 df.describe().T
 df.describe([0.01, 0.05, 0.25, 0.50, 0.75, 0.95, 0.99]).T
@@ -144,19 +124,13 @@ def check_outlier(dataframe, col_name):
 for col in num_cols:
     print(check_outlier(df, col))
 
-# Adım 6: Eksik gözlem var mı inceleyiniz.
-
 df.isnull().values.any()
 df.isnull().sum()
 df[df.iloc[:,:] == " "].sum()
 
-# GÖREV 2: Feature Engineering
-
-# Adım 1: Eksik ve aykırı gözlemler için gerekli işlemleri yapınız.
+# Feature Engineering
 
 sns.boxplot(data=df, x=df["TotalCharges"])
-
-# aykırı gözlem yok?
 
 sns.kdeplot(df["TotalCharges"])
 
@@ -166,17 +140,12 @@ df.isnull().values.any()
 
 sns.boxplot(data=df, x=df["TotalCharges"])
 
-# Adım 2: Yeni değişkenler oluşturunuz.
-
 df.corr().sort_values(by="Churn", ascending=False)
 
 df["MonthlyCharges"].describe().T
 
 df["MonthlyCharges_Cat"] = pd.cut(df["MonthlyCharges"], bins=[df["MonthlyCharges"].min(),43,68,93,df["MonthlyCharges"].max()+1],
                                   labels=["Lower", "Lower_Middle","Upper_Middle", "Upper"], right=False)
-
-
-# Adım 3: Encoding işlemlerini gerçekleştiriniz.
 
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
@@ -197,6 +166,7 @@ for col in binary_cols:
     if col != "Churn":
         df = label_encoder(df, col)
 df.head()
+
 # One Hot Encoding
 
 def one_hot_encoder(dataframe, categorical_cols, drop_first=True):
@@ -209,12 +179,11 @@ ohe_cols = [col for col in df.columns if 10 >= df[col].nunique() > 2]
 df = one_hot_encoder(df, ohe_cols)
 
 df.head()
-# Adım 4: Numerik değişkenler için standartlaştırma yapınız
 
-# Veri normal dağılıma uyuyorsa standartscaler uymuyorsa minmax
+# Veri normal daÃ°Ã½lÃ½ma uyuyorsa standartscaler uymuyorsa minmax
 
 # H0: Uygun
-# H1: Değil
+# H1: DeÃ°il
 
 from scipy.stats import ttest_1samp, shapiro, levene, ttest_ind, mannwhitneyu, \
     pearsonr, spearmanr, kendalltau, f_oneway, kruskal
@@ -227,9 +196,7 @@ for i in num_cols:
 scaler = StandardScaler()
 df[num_cols] = scaler.fit_transform(df[num_cols])
 df.head()
-# GÖREV 3: Modelleme
-
-# Adım 1: Sınıflandırma algoritmaları ile modeller kurup, accuracy skorlarını inceleyip. En iyi 4 modeli seçiniz.
+# Modelling
 
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
@@ -243,7 +210,7 @@ X_train, X_test, y_train, y_test = train_test_split(X,
                                                     y,
                                                     test_size=0.20, random_state=1)
 
-# 1 - LOJİSTİK REGRESYON
+# 1 - LOGISTIC REGRESSION
 
 from sklearn.linear_model import LogisticRegression
 
@@ -346,10 +313,7 @@ for model in modeller:
     print(isimler + ":" )
     print("Accuracy: {:.4%}".format(dogruluk))
 
-# Seçilen modeller: GBM, XGBoost, LightGBM, CatBoost
-
-# Adım 2: Seçtiğiniz modeller ile hiperparametre optimizasyonu gerçekleştirin ve bulduğunuz hiparparametreler ile modeli
-# tekrar kurunuz.
+# SeÃ§ilen modeller: GBM, XGBoost, LightGBM, CatBoost
 
 # GBM Final
 

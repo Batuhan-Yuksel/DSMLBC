@@ -1,28 +1,18 @@
-# GÖZETİMSİZ ÖĞRENME İLE MÜŞTERİ SEGMENTASYONU
-
-# İŞ PROBLEMİ
-
-# FLO müşterilerini segmentlere ayırıp bu segmentlere göre pazarlama stratejileri belirlemek istiyor. Buna yönelik
-# olarak müşterilerin davranışları tanımlanacak ve bu davranışlardaki öbeklenmelere göre gruplar oluşturulacak.
-
-# Veri Seti Hikayesi
-
-# Veri seti Flo’dan son alışverişlerini 2020 - 2021 yıllarında OmniChannel (hem online hem offline alışveriş yapan)
-# olarak yapan müşterilerin geçmiş alışveriş davranışlarından elde edilen bilgilerden oluşmaktadır.
+# CUSTOMER SEGMENTATION WITH UNSUPERVISED LEARNING
 
 
-# master_id Eşsiz müşteri numarası
-# order_channel Alışveriş yapılan platforma ait hangi kanalın kullanıldığı (Android, ios, Desktop, Mobile)
-# last_order_channel En son alışverişin yapıldığı kanal
-# first_order_date Müşterinin yaptığı ilk alışveriş tarihi
-# last_order_date Müşterinin yaptığı son alışveriş tarihi
-# last_order_date_online Müşterinin online platformda yaptığı son alışveriş tarihi
-# last_order_date_offline Müşterinin offline platformda yaptığı son alışveriş tarihi
-# order_num_total_ever_online Müşterinin online platformda yaptığı toplam alışveriş sayısı
-# order_num_total_ever_offline Müşterinin offline'da yaptığı toplam alışveriş sayısı
-# customer_value_total_ever_offline Müşterinin offline alışverişlerinde ödediği toplam ücret
-# customer_value_total_ever_online Müşterinin online alışverişlerinde ödediği toplam ücret
-# interested_in_categories_12 Müşterinin son 12 ayda alışveriş yaptığı kategorilerin listesi
+# master_id EÃ¾siz mÃ¼Ã¾teri numarasÃ½
+# order_channel AlÃ½Ã¾veriÃ¾ yapÃ½lan platforma ait hangi kanalÃ½n kullanÃ½ldÃ½Ã°Ã½ (Android, ios, Desktop, Mobile)
+# last_order_channel En son alÃ½Ã¾veriÃ¾in yapÃ½ldÃ½Ã°Ã½ kanal
+# first_order_date MÃ¼Ã¾terinin yaptÃ½Ã°Ã½ ilk alÃ½Ã¾veriÃ¾ tarihi
+# last_order_date MÃ¼Ã¾terinin yaptÃ½Ã°Ã½ son alÃ½Ã¾veriÃ¾ tarihi
+# last_order_date_online MÃ¼Ã¾terinin online platformda yaptÃ½Ã°Ã½ son alÃ½Ã¾veriÃ¾ tarihi
+# last_order_date_offline MÃ¼Ã¾terinin offline platformda yaptÃ½Ã°Ã½ son alÃ½Ã¾veriÃ¾ tarihi
+# order_num_total_ever_online MÃ¼Ã¾terinin online platformda yaptÃ½Ã°Ã½ toplam alÃ½Ã¾veriÃ¾ sayÃ½sÃ½
+# order_num_total_ever_offline MÃ¼Ã¾terinin offline'da yaptÃ½Ã°Ã½ toplam alÃ½Ã¾veriÃ¾ sayÃ½sÃ½
+# customer_value_total_ever_offline MÃ¼Ã¾terinin offline alÃ½Ã¾veriÃ¾lerinde Ã¶dediÃ°i toplam Ã¼cret
+# customer_value_total_ever_online MÃ¼Ã¾terinin online alÃ½Ã¾veriÃ¾lerinde Ã¶dediÃ°i toplam Ã¼cret
+# interested_in_categories_12 MÃ¼Ã¾terinin son 12 ayda alÃ½Ã¾veriÃ¾ yaptÃ½Ã°Ã½ kategorilerin listesi
 
 
 from warnings import filterwarnings
@@ -37,17 +27,12 @@ import seaborn as sns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-# GÖREV 1: Veriyi Hazırlama
-
-# Adım 1: flo_data_20K.csv verisini okutunuz.
-
 df_ = pd.read_csv(r"C:\Users\Batuhan\Desktop\MIUUL\3. Hafta\FLOCLTVPrediction/flo_data_20k.csv")
 df = df_.copy()
 df.head()
 df.isnull().values.any()
 df.dtypes
-# Adım 2: Müşterileri segmentlerken kullanacağınız değişkenleri seçiniz.
-# Not: Tenure (Müşterinin yaşı), Recency (en son kaç gün önce alışveriş yaptığı) gibi yeni değişkenler oluşturabilirsiniz.
+
 
 for col in df.columns:
     if "date" in col:
@@ -70,33 +55,29 @@ df["Monetary"] = df["TotalPrice"] / df["TotalTransaction"]
 
 df['Recency'] = df['Recency'].dt.days
 
-# GÖREV 2: K-Means ile Müşteri Segmentasyonu
-
-# Adım 1: Değişkenleri standartlaştırınız.
-
 def grab_col_names(dataframe, cat_th=10, car_th=20):
     """
 
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal değişkenlerin isimlerini verir.
-    Not: Kategorik değişkenlerin içerisine numerik görünümlü kategorik değişkenler de dahildir.
+    Veri setindeki kategorik, numerik ve kategorik fakat kardinal deÃ°iÃ¾kenlerin isimlerini verir.
+    Not: Kategorik deÃ°iÃ¾kenlerin iÃ§erisine numerik gÃ¶rÃ¼nÃ¼mlÃ¼ kategorik deÃ°iÃ¾kenler de dahildir.
 
     Parameters
     ------
         dataframe: dataframe
-                Değişken isimleri alınmak istenilen dataframe
+                DeÃ°iÃ¾ken isimleri alÃ½nmak istenilen dataframe
         cat_th: int, optional
-                numerik fakat kategorik olan değişkenler için sınıf eşik değeri
+                numerik fakat kategorik olan deÃ°iÃ¾kenler iÃ§in sÃ½nÃ½f eÃ¾ik deÃ°eri
         car_th: int, optinal
-                kategorik fakat kardinal değişkenler için sınıf eşik değeri
+                kategorik fakat kardinal deÃ°iÃ¾kenler iÃ§in sÃ½nÃ½f eÃ¾ik deÃ°eri
 
     Returns
     ------
         cat_cols: list
-                Kategorik değişken listesi
+                Kategorik deÃ°iÃ¾ken listesi
         num_cols: list
-                Numerik değişken listesi
+                Numerik deÃ°iÃ¾ken listesi
         cat_but_car: list
-                Kategorik görünümlü kardinal değişken listesi
+                Kategorik gÃ¶rÃ¼nÃ¼mlÃ¼ kardinal deÃ°iÃ¾ken listesi
 
     Examples
     ------
@@ -107,9 +88,9 @@ def grab_col_names(dataframe, cat_th=10, car_th=20):
 
     Notes
     ------
-        cat_cols + num_cols + cat_but_car = toplam değişken sayısı
-        num_but_cat cat_cols'un içerisinde.
-        Return olan 3 liste toplamı toplam değişken sayısına eşittir: cat_cols + num_cols + cat_but_car = değişken sayısı
+        cat_cols + num_cols + cat_but_car = toplam deÃ°iÃ¾ken sayÃ½sÃ½
+        num_but_cat cat_cols'un iÃ§erisinde.
+        Return olan 3 liste toplamÃ½ toplam deÃ°iÃ¾ken sayÃ½sÃ½na eÃ¾ittir: cat_cols + num_cols + cat_but_car = deÃ°iÃ¾ken sayÃ½sÃ½
 
     """
 
@@ -157,9 +138,7 @@ new = [col for col in new if "master_id" not in col]
 
 df = df[new]
 
-
-# Adım 2: Optimum küme sayısını belirleyiniz.
-
+# Optimum Number of Cluster
 from sklearn.cluster import KMeans
 from yellowbrick.cluster import KElbowVisualizer
 kmeans = KMeans(n_clusters=10, random_state=1).fit(df)
@@ -173,8 +152,8 @@ for k in K:
     ssd.append(kmeans.inertia_)
 
 plt.plot(K, ssd, "bx-")
-plt.xlabel("Farklı K Değerlerine Karşılık SSE/SSR/SSD")
-plt.title("Optimum Küme sayısı için Elbow Yöntemi")
+plt.xlabel("FarklÃ½ K DeÃ°erlerine KarÃ¾Ã½lÃ½k SSE/SSR/SSD")
+plt.title("Optimum KÃ¼me sayÃ½sÃ½ iÃ§in Elbow YÃ¶ntemi")
 plt.show()
 
 kmeans = KMeans()
@@ -182,9 +161,9 @@ elbow = KElbowVisualizer(kmeans, k=(2, 20))
 elbow.fit(df)
 elbow.show()
 
-# Optimum küme sayısı 8
+# Optimum Number of Cluster = 8
 
-# Adım 3: Modelinizi oluşturunuz ve müşterilerinizi segmentleyiniz.
+# Modelling
 
 kmeans = KMeans(n_clusters=elbow.elbow_value_).fit(df)
 
@@ -200,15 +179,13 @@ df["cluster"] = clusters_kmeans
 
 df["cluster"] = df["cluster"] + 1
 
-# Adım 4: Herbir segmenti istatistiksel olarak inceleyeniz.
-
 liste = df["cluster"].unique()
 liste.sort()
 
 df["TotalPrice"] = df["customer_value_total_ever_online"] + df["customer_value_total_ever_offline"]
 
 for i in liste:
-    print("Küme sınıfı:", i)
+    print("KÃ¼me sÃ½nÃ½fÃ½:", i)
     print("-"*120)
     print((df[df["cluster"] == i].describe().T).round(2))
     print("-"*120, "\n\n")
@@ -219,11 +196,7 @@ plt.ylabel("Total Price Mean")
 plt.title("Average Sales Price by Clusters")
 plt.show()
 
-
-
-# GÖREV 3: Hierarchical Clustering ile Müşteri Segmentasyonu
-
-# Adım 1: Görev 2'de standırlaştırdığınız dataframe'i kullanarak optimum küme sayısını belirleyiniz.
+# Hierarchical Clustering
 
 from scipy.cluster.hierarchy import linkage
 from scipy.cluster.hierarchy import dendrogram
@@ -231,15 +204,15 @@ from scipy.cluster.hierarchy import dendrogram
 hc_average = linkage(df, "average")
 
 plt.figure(figsize=(40, 20))
-plt.title("Hiyerarşik Kümeleme Dendogramı")
-plt.xlabel("Gözlem Birimleri")
-plt.ylabel("Uzaklıklar")
+plt.title("HiyerarÃ¾ik KÃ¼meleme DendogramÃ½")
+plt.xlabel("GÃ¶zlem Birimleri")
+plt.ylabel("UzaklÃ½klar")
 dendrogram(hc_average, leaf_font_size=10)
 plt.show()
 
-# Adım 2: Modelinizi oluşturunuz ve müşterileriniz segmentleyiniz.
+# Modelling and Segmentation
 
-# küme sayısının belirlenmesi
+# Optimum Number of Cluster
 plt.figure(figsize=(7, 5))
 plt.title("Dendrograms")
 dend = dendrogram(hc_average)
@@ -247,7 +220,7 @@ plt.axhline(y=0.5, color='r', linestyle='--')
 plt.axhline(y=0.6, color='b', linestyle='--')
 plt.show()
 
-# final modeli
+# Final Model
 from sklearn.cluster import AgglomerativeClustering
 
 cluster = AgglomerativeClustering(n_clusters=5, linkage="average")
@@ -258,11 +231,8 @@ df = pd.read_csv(r"C:\Users\Batuhan\Desktop\MIUUL\3. Hafta\FLOCLTVPrediction/flo
 
 df["hi_cluster_no"] = clusters
 
-
-# Adım 3: Her bir segmenti istatistiksel olarak inceleyeniz.
-
 for i in liste:
-    print("Küme sınıfı:", i)
+    print("KÃ¼me sÃ½nÃ½fÃ½:", i)
     print("-"*120)
     print((df[df["hi_cluster_no"] == i].describe().T).round(2))
     print("-"*120, "\n\n")

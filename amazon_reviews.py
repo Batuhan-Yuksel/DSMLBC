@@ -1,29 +1,29 @@
 # # # RATING PRODUCTS & SORTING REVIEWS IN AMAZON
 
-# İŞ PROBLEMİ
+# Ä°Å PROBLEMÄ°
 
-# E-ticaretteki en önemli problemlerden bir tanesi ürünlere satış sonrası verilen puanların doğru şekilde hesaplanmasıdır. Bu problemin
-# çözümü e-ticaret sitesi için daha fazla müşteri memnuniyeti sağlamak, satıcılar için ürünün öne çıkması ve satın alanlar için sorunsuz
-# bir alışveriş deneyimi demektir. Bir diğer problem ise ürünlere verilen yorumların doğru bir şekilde sıralanması olarak karşımıza çıkmaktadır.
-# Yanıltıcı yorumların öne çıkması ürünün satışını doğrudan etkileyeceğinden dolayı hem maddi kayıp hem de müşteri kaybına neden olacaktır.
-# Bu 2 temel problemin çözümünde e-ticaret sitesi ve satıcılar satışlarını arttırırken müşteriler ise satın alma yolculuğunu sorunsuz olarak
-# tamamlayacaktır.
+# E-ticaretteki en Ã¶nemli problemlerden bir tanesi Ã¼rÃ¼nlere satÄ±ÅŸ sonrasÄ± verilen puanlarÄ±n doÄŸru ÅŸekilde hesaplanmasÄ±dÄ±r. Bu problemin
+# Ã§Ã¶zÃ¼mÃ¼ e-ticaret sitesi iÃ§in daha fazla mÃ¼ÅŸteri memnuniyeti saÄŸlamak, satÄ±cÄ±lar iÃ§in Ã¼rÃ¼nÃ¼n Ã¶ne Ã§Ä±kmasÄ± ve satÄ±n alanlar iÃ§in sorunsuz
+# bir alÄ±ÅŸveriÅŸ deneyimi demektir. Bir diÄŸer problem ise Ã¼rÃ¼nlere verilen yorumlarÄ±n doÄŸru bir ÅŸekilde sÄ±ralanmasÄ± olarak karÅŸÄ±mÄ±za Ã§Ä±kmaktadÄ±r.
+# YanÄ±ltÄ±cÄ± yorumlarÄ±n Ã¶ne Ã§Ä±kmasÄ± Ã¼rÃ¼nÃ¼n satÄ±ÅŸÄ±nÄ± doÄŸrudan etkileyeceÄŸinden dolayÄ± hem maddi kayÄ±p hem de mÃ¼ÅŸteri kaybÄ±na neden olacaktÄ±r.
+# Bu 2 temel problemin Ã§Ã¶zÃ¼mÃ¼nde e-ticaret sitesi ve satÄ±cÄ±lar satÄ±ÅŸlarÄ±nÄ± arttÄ±rÄ±rken mÃ¼ÅŸteriler ise satÄ±n alma yolculuÄŸunu sorunsuz olarak
+# tamamlayacaktÄ±r.
 
-# Amazon ürün verilerini içeren bu veri seti ürün kategorileri ile çeşitli metadataları içermektedir. Elektronik kategorisindeki
-# en fazla yorum alan ürünün kullanıcı puanları ve yorumları vardır.
+# Amazon Ã¼rÃ¼n verilerini iÃ§eren bu veri seti Ã¼rÃ¼n kategorileri ile Ã§eÅŸitli metadatalarÄ± iÃ§ermektedir. Elektronik kategorisindeki
+# en fazla yorum alan Ã¼rÃ¼nÃ¼n kullanÄ±cÄ± puanlarÄ± ve yorumlarÄ± vardÄ±r.
 
-# reviewerID: Kullanıcı ID’si
-# asin: Ürün ID’si
-# reviewerName: Kullanıcı Adı
-# helpful: Faydalı değerlendirme derecesi
-# reviewText: Değerlendirme
-# overall: Ürün rating’i
-# summary: Değerlendirme özeti
-# unixReviewTime: Değerlendirme zamanı
-# reviewTime: Değerlendirme zamanı Raw
-# day_diff: Değerlendirmeden itibaren geçen gün sayısı
-# helpful_yes: Değerlendirmenin faydalı bulunma sayısı
-# total_vote: Değerlendirmeye verilen oy sayısı
+# reviewerID: KullanÄ±cÄ± IDâ€™si
+# asin: ÃœrÃ¼n IDâ€™si
+# reviewerName: KullanÄ±cÄ± AdÄ±
+# helpful: FaydalÄ± deÄŸerlendirme derecesi
+# reviewText: DeÄŸerlendirme
+# overall: ÃœrÃ¼n ratingâ€™i
+# summary: DeÄŸerlendirme Ã¶zeti
+# unixReviewTime: DeÄŸerlendirme zamanÄ±
+# reviewTime: DeÄŸerlendirme zamanÄ± Raw
+# day_diff: DeÄŸerlendirmeden itibaren geÃ§en gÃ¼n sayÄ±sÄ±
+# helpful_yes: DeÄŸerlendirmenin faydalÄ± bulunma sayÄ±sÄ±
+# total_vote: DeÄŸerlendirmeye verilen oy sayÄ±sÄ±
 
 import numpy as np
 import pandas as pd
@@ -47,17 +47,8 @@ df.head()
 # df.isnull().sum()
 # df["asin"].unique()
 # df.dropna(inplace=True)
-# # # Proje Görevleri # # #
-
-# GÖREV 1: Average Rating’i güncel yorumlara göre hesaplayınız ve var olan average rating ile kıyaslayınız.
-# Paylaşılan veri setinde kullanıcılar bir ürüne puanlar vermiş ve yorumlar yapmıştır. Bu görevde amacımız verilen puanları tarihe göre
-# ağırlıklandırarak değerlendirmek. İlk ortalama puan ile elde edilecek tarihe göre ağırlıklı puanın karşılaştırılması gerekmektedir.
-
-# Adım 1: Ürünün ortalama puanını hesaplayınız.
 
 df["overall"].mean()
-
-# Adım 2: Tarihe göre ağırlıklı puan ortalamasını hesaplayınız.
 
 df["reviewTime"].max()
 df["day_diff"].max()
@@ -71,8 +62,6 @@ df.loc[df["day_diff"] <= 30, "overall"].mean() * 0.22 + \
     df.loc[(df["day_diff"] > 360) & (df["day_diff"] <= 720), "overall"].mean() * 0.14 + \
     df.loc[(df["day_diff"] > 720) & (df["day_diff"] <= np.inf), "overall"].mean() * 0.10
 
-
-# Adım 3: Ağırlıklandırılmış puanlamada her bir zaman diliminin ortalamasını karşılaştırıp yorumlayınız. ?
 """
 df.loc[df["day_diff"] <= 30, "overall"].mean() * 0.22
 df.loc[(df["day_diff"] > 30) & (df["day_diff"] <= 90), "overall"].mean() * 0.20
@@ -102,31 +91,15 @@ df3 = pd.concat([df2, x], axis=1)
 
 plt.plot(df3.iloc[:,0], "r-")
 plt.plot(df3.iloc[:,1], "b--")
-plt.xlabel("Dönemler")
+plt.xlabel("DÃ¶nemler")
 plt.ylabel("Ortalama")
-plt.title("Genel Ortalama vs Dönemsel Ortalama")
-
-# Yorum:
-
-# GÖREV 2: Ürün için ürün detay sayfasında görüntülenecek 20 review'i belirleyiniz.
-
-# Adım 1: helpful_no değişkenini üretiniz.
-
-# • total_vote bir yoruma verilen toplam up-down sayısıdır.
-# • up, helpful demektir.
-# • Veri setinde helpful_no değişkeni yoktur, var olan değişkenler üzerinden üretilmesi gerekmektedir.
-# • Toplam oy sayısından (total_vote) yararlı oy sayısı (helpful_yes) çıkarılarak yararlı bulunmayan oy sayılarını (helpful_no) bulunuz.
+plt.title("Genel Ortalama vs DÃ¶nemsel Ortalama")
 
 df["helpful_no"] = df["total_vote"] - df["helpful_yes"]
 df.helpful_no.min()
 df.head()
 
-# Adım 2: score_pos_neg_diff, score_average_rating ve wilson_lower_bound skorlarını hesaplayıp veriye ekleyiniz.
-# • score_pos_neg_diff, score_average_rating ve wilson_lower_bound skorlarını hesaplayabilmek için score_pos_neg_diff,
-# score_average_rating ve wilson_lower_bound fonksiyonlarını tanımlayınız.
-# • score_pos_neg_diff'a göre skorlar oluşturunuz. Ardından; df içerisinde score_pos_neg_diff ismiyle kaydediniz.
-# • score_average_rating'a göre skorlar oluşturunuz. Ardından; df içerisinde score_average_rating ismiyle kaydediniz.
-# • wilson_lower_bound'a göre skorlar oluşturunuz. Ardından; df içerisinde wilson_lower_bound ismiyle kaydediniz.
+# score_pos_neg_diff, score_average_rating ve wilson_lower_bound skorlarÄ±nÄ±nÄ±n hesaplanmasÄ±
 
 df["score_pos_neg_diff"] = df["helpful_yes"] - df["helpful_no"]
 df["score_pos_neg_diff"].min()
@@ -158,15 +131,11 @@ df["wilson_lower_bound"] = df.apply(lambda x: wilson_lower_bound(x["helpful_yes"
 df.head()
 df["wilson_lower_bound"].describe()
 
-
-# Adım 3: 20 Yorumu belirleyiniz ve sonuçları Yorumlayınız.
-
-# • wilson_lower_bound'a göre ilk 20 yorumu belirleyip sıralayanız.
-
+# gÃ¶sterilecek ilk 20 yorum
 df.sort_values("wilson_lower_bound", ascending=False).head(20)
 
-# • Sonuçları yorumlayınız.
+# Yorum
 df[["total_vote","helpful_yes","helpful_no"]].describe([0.01,0.25,0.5,0.75,0.9,0.95,0.99,0.995,0.999]).T
-# Yorumların %99'u 4 oydan daha az oy almıştır. Bir yoruma verilen oy sayısı pozitif ya da negatif yorumun öne çıkmasına sebep olmuştur.
-# sadece pozitif oyu olup negatifi olmayan yorumlar sıralamada negatifi olanların da gerisine düşebilmiştir.
-# Bir yorumun öne çıkması için oy sayısı önemli bir etkendir
+# YorumlarÄ±n %99'u 4 oydan daha az oy almÄ±ÅŸtÄ±r. Bir yoruma verilen oy sayÄ±sÄ± pozitif ya da negatif yorumun Ã¶ne Ã§Ä±kmasÄ±na sebep olmuÅŸtur.
+# sadece pozitif oyu olup negatifi olmayan yorumlar sÄ±ralamada negatifi olanlarÄ±n da gerisine dÃ¼ÅŸebilmiÅŸtir.
+# Bir yorumun Ã¶ne Ã§Ä±kmasÄ± iÃ§in oy sayÄ±sÄ± Ã¶nemli bir etkendir

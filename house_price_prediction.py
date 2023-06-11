@@ -1,18 +1,8 @@
 ##################################
-# # # # # BATUHAN YÜKSEL # # # # #
+# # # # # BATUHAN YÃœKSEL # # # # #
 ##################################
 
-# EV FÝYAT TAHMÝN MODELÝ
-
-# Her bir eve ait özelliklerin ve ev fiyatlarýnýn bulunduðu veri seti kullanýlarak, farklý tipteki evlerin fiyatlarýna iliþkin bir
-# makine öðrenmesi projesi gerçekleþtirilmek istenmektedir.
-
-# Veri Seti Hikayesi
-
-# Ames, Lowa’daki konut evlerinden oluþan bu veri seti içerisinde 79 açýklayýcý deðiþken bulunduruyor. Kaggle üzerinde bir yarýþmasý da
-# bulunan projenin veri seti ve yarýþma sayfasýna aþaðýdaki linkten ulaþabilirsiniz.
-# Veri seti bir kaggle yarýþmasýna ait olduðundan dolayý train ve test olmak üzere iki farklý csv dosyasý vardýr.
-# Test veri setinde ev fiyatlarý boþ býrakýlmýþ olup, bu deðerleri sizin tahmin etmeniz beklenmektedir.
+# HOUSE PRICE PREDICTION
 
 
 import numpy as np
@@ -23,8 +13,6 @@ import matplotlib.pyplot as plt
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', 500)
 
-# Görev 1: Keþifçi Veri Analizi
-# Adým 1: Train ve Test veri setlerini okutup birleþtiriniz. Birleþtirdiðiniz veri üzerinden ilerleyiniz.
 
 train = pd.read_csv(r"C:\Users\Batuhan\Desktop\machine_learning\datasets\train.csv")
 test = pd.read_csv(r"C:\Users\Batuhan\Desktop\machine_learning\datasets\test.csv")
@@ -34,31 +22,29 @@ df = df_.copy()
 df.head()
 df.tail()
 
-# Adým 2: Numerik ve kategorik deðiþkenleri yakalayýnýz.
-
 def grab_col_names(dataframe, cat_th=11, car_th=30):
     """
 
-    Veri setindeki kategorik, numerik ve kategorik fakat kardinal deðiþkenlerin isimlerini verir.
-    Not: Kategorik deðiþkenlerin içerisine numerik görünümlü kategorik deðiþkenler de dahildir.
+    Veri setindeki kategorik, numerik ve kategorik fakat kardinal deÃ°iÃ¾kenlerin isimlerini verir.
+    Not: Kategorik deÃ°iÃ¾kenlerin iÃ§erisine numerik gÃ¶rÃ¼nÃ¼mlÃ¼ kategorik deÃ°iÃ¾kenler de dahildir.
 
     Parameters
     ------
         dataframe: dataframe
-                Deðiþken isimleri alýnmak istenilen dataframe
+                DeÃ°iÃ¾ken isimleri alÃ½nmak istenilen dataframe
         cat_th: int, optional
-                numerik fakat kategorik olan deðiþkenler için sýnýf eþik deðeri
+                numerik fakat kategorik olan deÃ°iÃ¾kenler iÃ§in sÃ½nÃ½f eÃ¾ik deÃ°eri
         car_th: int, optinal
-                kategorik fakat kardinal deðiþkenler için sýnýf eþik deðeri
+                kategorik fakat kardinal deÃ°iÃ¾kenler iÃ§in sÃ½nÃ½f eÃ¾ik deÃ°eri
 
     Returns
     ------
         cat_cols: list
-                Kategorik deðiþken listesi
+                Kategorik deÃ°iÃ¾ken listesi
         num_cols: list
-                Numerik deðiþken listesi
+                Numerik deÃ°iÃ¾ken listesi
         cat_but_car: list
-                Kategorik görünümlü kardinal deðiþken listesi
+                Kategorik gÃ¶rÃ¼nÃ¼mlÃ¼ kardinal deÃ°iÃ¾ken listesi
 
     Examples
     ------
@@ -69,9 +55,9 @@ def grab_col_names(dataframe, cat_th=11, car_th=30):
 
     Notes
     ------
-        cat_cols + num_cols + cat_but_car = toplam deðiþken sayýsý
-        num_but_cat cat_cols'un içerisinde.
-        Return olan 3 liste toplamý toplam deðiþken sayýsýna eþittir: cat_cols + num_cols + cat_but_car = deðiþken sayýsý
+        cat_cols + num_cols + cat_but_car = toplam deÃ°iÃ¾ken sayÃ½sÃ½
+        num_but_cat cat_cols'un iÃ§erisinde.
+        Return olan 3 liste toplamÃ½ toplam deÃ°iÃ¾ken sayÃ½sÃ½na eÃ¾ittir: cat_cols + num_cols + cat_but_car = deÃ°iÃ¾ken sayÃ½sÃ½
 
     """
 
@@ -82,13 +68,11 @@ def grab_col_names(dataframe, cat_th=11, car_th=30):
     cat_but_car = [col for col in dataframe.columns if dataframe[col].nunique() > car_th and
                    dataframe[col].dtypes == "O"]
     cat_cols = cat_cols + num_but_cat
-    # kategorik deðiþkenlerde gez ama kategorik görünüp aslýnda kardinal olanlarý alma diyoruz.
+    
     cat_cols = [col for col in cat_cols if col not in cat_but_car]
 
     # num_cols
-    # veri tipi object'ten farklý olanlarý getirdik.
     num_cols = [col for col in dataframe.columns if dataframe[col].dtypes != "O"]
-    # sayýsal deðiþkenlerde gez ama sayýsal görünüp aslýnda kategorik olanlarý çýkar diyoruz.
     num_cols = [col for col in num_cols if col not in num_but_cat]
 
     print(f"Observations: {dataframe.shape[0]}")
@@ -105,20 +89,13 @@ num_cols = [col for col in num_cols if col != "Id"]
 
 num_cols = [col for col in num_cols if col != "SalePrice"]
 
-# Adým 3: Gerekli düzenlemeleri yapýnýz. (Tip hatasý olan deðiþkenler gibi)
-
 for col in num_cols:
     print(col, str(df[col].dtype))
-# num_cols içinde tip hatasý olan yok
 
 for col in cat_cols:
     print(col, str(df[col].dtype), df[col].nunique())
 
 df[cat_cols] = df[cat_cols].astype(object)
-
-# cat_cols içindeki sayýsal deðiþkenler kategorik deðiþkene çevrildi.
-
-# Adým 4: Numerik ve kategorik deðiþkenlerin veri içindeki daðýlýmýný gözlemleyiniz.
 
 def check_df(dataframe, head=5):
     print("----- Shape -----")
@@ -137,12 +114,7 @@ def check_df(dataframe, head=5):
 check_df(df[num_cols])
 check_df(df[cat_cols])
 
-# Adým 5: Kategorik deðiþkenler ile hedef deðiþken incelemesini yapýnýz.
-
-
-
-# Adým 6: Aykýrý gözlem var mý inceleyiniz.
-
+# Outlier Analysis
 def outlier_thresholds(dataframe, col_name, q1=0.01, q3=0.99):
     quartile1 = dataframe[col_name].quantile(q1)
     quartile3 = dataframe[col_name].quantile(q3)
@@ -160,10 +132,8 @@ def check_outlier(dataframe, col_name):
 
 for col in num_cols:
     print(col, check_outlier(df, col))
-
-# Aykýrý gözlem var
-
-# Adým 7: Eksik gözlem var mý inceleyiniz.
+    
+# Missing Values
 
 df.isnull().values.any()
 df.isnull().sum()
@@ -179,11 +149,9 @@ def missing_values_table(dataframe, na_name=False):
         return na_columns
 
 missing_values_table(df, True)
-# Eksik gözlem var
 
-# GÖREV 2: Feature Engineering
+# Feature Engineering
 
-# Adým 1: Eksik ve aykýrý gözlemler için gerekli iþlemleri yapýnýz.
 train.isnull().sum()
 
 def replace_with_thresholds(dataframe, variable):
@@ -193,9 +161,6 @@ def replace_with_thresholds(dataframe, variable):
 
 for col in num_cols:
     replace_with_thresholds(df, col)
-# num_cols içindeki aykýrý deðerler giderildi
-
-# satýþ fiyatý ile en yüksek korelasyona sahip olan OverallQual deðiþkeni kýrýlýmýnda num_cols deðiþkenleri ortalama ile doldurulmalý
 
 for col in num_cols:
     if df[col].dtype == "int64":
@@ -205,7 +170,6 @@ for col in num_cols:
 
 for col in num_cols:
     print(col, df[col].isnull().sum())
-# num_cols içindeki eksik deðerler giderildi
 
 for col in cat_cols:
     print(col, df[col].isnull().sum())
@@ -225,7 +189,7 @@ for col in cat_cols:
     print(col, df[col].isnull().sum())
 
 
-# Adým 2: Rare Encoder uygulayýnýz.
+#  Rare Encoding
 
 def cat_summary(dataframe, col_name, plot=False):
     print(pd.DataFrame({col_name: dataframe[col_name].value_counts(),
@@ -267,35 +231,30 @@ df = new_df
 df = df.drop("PoolArea", axis=1)
 num_cols.remove("PoolArea")
 
-# Adým 3: Yeni deðiþkenler oluþturunuz.
-
 dff = pd.concat([df[num_cols], df["SalePrice"]], axis=1)
 
 dff.corr().sort_values(by="SalePrice", ascending=False)
 
 df["GrLivArea"].describe().T
 
-# yeni deðiþken 1
-df["Yapým-Tadilat"] = df["YearRemodAdd"] - df["YearBuilt"]
-df["Yapým-Tadilat"] = df["Yapým-Tadilat"].astype(float)
+df["YapÃ½m-Tadilat"] = df["YearRemodAdd"] - df["YearBuilt"]
+df["YapÃ½m-Tadilat"] = df["YapÃ½m-Tadilat"].astype(float)
 
-# yeni deðiþken 2
+
 df["GrLivArea_Cat"] = pd.cut(df["GrLivArea"], bins=[df["GrLivArea"].min(), df["GrLivArea"].quantile(0.25),
                                                     df["GrLivArea"].quantile(0.5), df["GrLivArea"].quantile(0.75),
                                                     df["GrLivArea"].max()+1], right=False,
                              labels=["Category_1", "Category_2", "Category_3", "Category_4"])
-df["GrLivArea_Cat"].dtype
-# yeni deðiþken 3
+
 df["YearBuilt_Cat"] = pd.cut(df["YearBuilt"], bins=[df["YearBuilt"].min(), df["YearBuilt"].quantile(0.25),
                                                     df["YearBuilt"].median(), df["YearBuilt"].quantile(0.75),
                                                     df["YearBuilt"].max()+1], right=False,
                              labels=["Category_1", "Category_2", "Category_3", "Category_4"])
 
-# yeni deðiþken 4
 df["Multiple_Overall"] = df["OverallQual"] * df["OverallCond"]
 df["Multiple_Overall"] = df["Multiple_Overall"].astype(float)
 
-# Adým 4: Encoding iþlemlerini gerçekleþtiriniz.
+# AdÃ½m 4: Encoding iÃ¾lemlerini gerÃ§ekleÃ¾tiriniz.
 
 # Label Encoding
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder, StandardScaler, RobustScaler
@@ -322,7 +281,7 @@ ohe_cols = [col for col in df.columns if 10 >= df[col].nunique() > 2]
 df = one_hot_encoder(df, ohe_cols)
 df.head()
 
-# Standartlaþtýrma
+# :Standadrdization
 
 ss = StandardScaler()
 
@@ -330,9 +289,7 @@ for col in num_cols:
     df[col] = ss.fit_transform(df[[col]])
 
 
-# GÖREV 3: Model Kurma
-
-# Adým 1:  Train ve Test verisini ayýrýnýz. (SalePrice deðiþkeni boþ olan deðerler test verisidir.)
+# Modelling
 
 df.reset_index(inplace=True, drop=True)
 variables = [col for col in df.columns if col not in "SalePrice"]
@@ -357,8 +314,6 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train,
                                                     test_size=0.25,
                                                     random_state=1)
 
-
-# Adým 2:  Train verisi ile model kurup, model baþarýsýný deðerlendiriniz.
 
 # XGBoost
 
@@ -397,11 +352,7 @@ y_pred = catb_model.predict(X_val)
 np.sqrt(mean_squared_error(y_val, y_pred))
 # 25025.90238329884
 
-
-
-
-# Adým 3: Hiperparemetre optimizasyonu gerçekleþtiriniz.
-
+# Hyperparameter Optimization
 # XGBoost
 
 xgb_grid = {
